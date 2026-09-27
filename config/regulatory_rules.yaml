@@ -29,12 +29,12 @@ rules:
   # Notification SLA
   - id: "RULE_TIMELY_NOTIFICATION"
     name: "Statutory SLA Notification Window"
-    framework: "DORA Article 19 & CBI Claims Guidelines"
-    statutory_reference: "Section 3.2"
+    framework: "CBI Insurance Claims Protocol (aligned with DORA Art. 19)"
+    statutory_reference: "Section 3.2 / Art. 19"
     severity: "CRITICAL"
     action_on_failure: "QUARANTINE"
     max_latency_days: 90
-    description: "Claims lodged >90 days post-incident constitute statutory SLA breaches."
+    description: "Policyholder claim filing latency must not exceed 90 calendar days under CBI claims protocol (contrasting with DORA Art. 19 supervisory reporting: 4h/24h initial, 72h intermediate)."
 
   # Permitted ISO Currency
   - id: "RULE_ALLOWED_CURRENCY"

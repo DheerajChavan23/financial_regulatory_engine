@@ -131,11 +131,19 @@ financial-ingestion-audit-engine/
 |---|---|---|---|---|
 | `RULE_POLICY_NUMBER_PRESENT` | CBI Consumer Protection Code | Section 4.1 & 4.2 | Mandatory active insurance policy identifier | Quarantine |
 | `RULE_POSITIVE_AMOUNTS` | CBI Solvency & Claims Protocol | Section 5.1 & 5.2 | Net liquidation and loss values must be $> €0.00$ | Quarantine |
-| `RULE_TIMELY_NOTIFICATION` | DORA Article 19 & CBI SLA | Section 3.2 | Notice latency must not exceed 90 calendar days | Quarantine |
+| `RULE_TIMELY_NOTIFICATION` | CBI Claims Protocol & DORA Alignment | Section 3.2 / Art. 19 | Policyholder loss filing latency must not exceed 90 calendar days | Quarantine |
 | `RULE_ALLOWED_CURRENCY` | ISO 4217 Currency Standards | Section 1.2 | Permitted currencies: `EUR`, `USD`, `GBP`, `CHF` | Quarantine |
 | `RULE_VALID_PPSN_FORMAT` | Irish Data Protection Act 2018 | Section 6.1 | Must adhere to statutory 7-digit + letter syntax | Flag Warning |
 | `RULE_LEDGER_RECONCILED` | Claims Liquidation Standards | Section 5.3 | $\sum (\text{Line Items}) = \text{Total Net Claim} \pm €0.05$ | Quarantine |
 | `RULE_METADATA_COMPLETENESS`| CBI Minimum Operational Req. | Section 2.2 | Mandatory dates, incident peril, and Irish county | Quarantine |
+
+> [!NOTE]
+> **Regulatory Precision on Notification Deadlines:**
+> - **Policyholder Claims Ingestion SLA (90 Days)**: Mandated under Central Bank of Ireland (CBI) Insurance Claims Protocols and policy contract terms. Submissions past 90 days from the incident date are quarantined for potential statute of limitations or SLA violations.
+> - **Supervisory ICT Incident Reporting (DORA Article 19)**: In contrast, DORA Article 19 specifically governs mandatory reporting *by the financial entity directly to supervisory authorities (the Central Bank of Ireland)* for major ICT-related incidents:
+>   - *Initial Notification*: Within 4 hours of classification and $\le 24$ hours of becoming aware.
+>   - *Intermediate Report*: Within 72 hours detailing mitigation measures.
+>   - *Final Report*: Within 1 month following complete remediation.
 
 ---
 
@@ -145,13 +153,13 @@ financial-ingestion-audit-engine/
 > **NEVER commit sensitive credentials, API keys, or raw personal data to GitHub!**
 
 ### What Should NOT Be Committed to Git:
-1. **`.env` Files**: Contains private keys and salts (`GEMINI_API_KEY`, `GOOGLE_API_KEY`, `ENGINE_GOVERNANCE__SALT`). Always use [.env.example](file:///C:/Users/chava/.gemini/antigravity-ide/scratch/financial-ingestion-audit-engine/.env.example).
+1. **`.env` Files**: Contains private keys and salts (`GEMINI_API_KEY`, `GOOGLE_API_KEY`, `ENGINE_GOVERNANCE__SALT`). Always use [.env.example](.env.example).
 2. **`data/chroma_db/`**: Local SQLite database and vector index binaries. These are auto-generated on first run.
 3. **Generated Lakehouse Payloads**: Raw PDFs, Bronze JSONs, Silver Parquet tables, and Gold mart files contain synthetic run outputs and should be ignored (directory structure is preserved via `.gitkeep`).
 4. **Python Cache & Environments**: `__pycache__/`, `.pytest_cache/`, `venv/`.
 
 ### Verified Safeguards in This Repository:
-- A production [.gitignore](file:///C:/Users/chava/.gemini/antigravity-ide/scratch/financial-ingestion-audit-engine/.gitignore) is pre-configured to block `.env`, `chroma_db/`, and generated lakehouse binaries.
+- A production [.gitignore](.gitignore) is pre-configured to block `.env`, `chroma_db/`, and generated lakehouse binaries.
 - The codebase contains **zero hardcoded API keys**; credentials are read dynamically from `os.environ`.
 - The PII Redaction engine ensures **zero plaintext PPSNs** or unmasked contact details are persisted into downstream Silver or Gold layers.
 
@@ -159,7 +167,7 @@ financial-ingestion-audit-engine/
 
 ## 📊 Power BI & DAX Metrics
 
-The engine exports **19 enterprise DAX measures** in [dax_measures.dax](file:///C:/Users/chava/.gemini/antigravity-ide/scratch/financial-ingestion-audit-engine/data/04_gold_lakehouse/bi_export/dax_measures.dax) alongside a complete Tabular Object Model in [powerbi_tabular_model.json](file:///C:/Users/chava/.gemini/antigravity-ide/scratch/financial-ingestion-audit-engine/data/04_gold_lakehouse/bi_export/powerbi_tabular_model.json):
+The engine exports **19 enterprise DAX measures** in [dax_measures.dax](data/04_gold_lakehouse/bi_export/dax_measures.dax) alongside a complete Tabular Object Model in [powerbi_tabular_model.json](data/04_gold_lakehouse/bi_export/powerbi_tabular_model.json):
 
 | Measure Name | DAX Formula | Category | Format |
 |---|---|---|---|
