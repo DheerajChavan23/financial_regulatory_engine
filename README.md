@@ -221,8 +221,3 @@ The test suite validates cryptographic PPSN pseudonymization, contact masking, a
 pytest tests/test_governance.py -v
 ```
 
----
-
-## 📜 License & Compliance Attribution
-- Developed under European Union Digital Operational Resilience Act (DORA - Regulation (EU) 2022/2554) guidelines.
-- Compliant with Central Bank of Ireland (Banc Ceannais na hÉireann) Cross-Industry Guidance on Operational Resilience.
