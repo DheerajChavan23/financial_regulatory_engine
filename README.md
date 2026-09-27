@@ -15,6 +15,7 @@ An enterprise-grade financial claims ingestion, data governance, and regulatory 
 ## 📑 Table of Contents
 - [Executive Overview](#-executive-overview)
 - [System Architecture](#-system-architecture)
+- [Executive BI Dashboard](#-executive-bi--analytics-dashboard-streamlit)
 - [Directory Structure](#-directory-structure)
 - [Regulatory & Statutory Rules Codified](#-regulatory--statutory-rules-codified)
 - [Data Lakehouse Tiers](#-data-lakehouse-tiers)
@@ -79,6 +80,14 @@ flowchart TD
     H --> I
     C & F & G & I & J & K --> L
 ```
+
+---
+
+## 🖥️ Executive BI & Analytics Dashboard (Streamlit)
+
+![Emerald Shield Assurance DAC Executive BI Dashboard](docs/images/streamlit_bi_dashboard.png)
+
+*The live executive BI dashboard evaluating DAX metrics over the DuckDB Gold Star Schema, showing active portfolio exposure (€724,991.56), geographic distribution across Irish provinces, DORA Article 18 incident tiering, and statutory SLA latency compliance.*
 
 ---
 
