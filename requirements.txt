@@ -1,0 +1,37 @@
+# Enterprise Regulatory & Operational Ingestion Engine
+# Core Dependencies (Python 3.11+)
+
+# Data Validation, Serialization & Configuration
+pydantic>=2.7.0
+pydantic-settings>=2.2.0
+pyyaml>=6.0.1
+python-dotenv>=1.0.1
+
+# Document Generation & Ingestion Parsers
+google-genai>=0.1.0
+faker>=25.0.0
+reportlab>=4.2.0
+pypdf>=4.2.0
+pdfplumber>=0.11.0
+openpyxl>=3.1.2
+python-docx>=1.1.0
+
+# Lakehouse, Analytics & Vector Storage
+pandas>=2.2.0
+pyarrow>=15.0.0
+duckdb>=0.10.0
+numpy>=1.26.0
+
+# Compliance RAG & Vector Embeddings
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
+scikit-learn>=1.4.0
+
+# UI, Dashboard & Operational CLI
+streamlit>=1.35.0
+plotly>=5.22.0
+rich>=13.7.0
+
+# Testing & Governance Validation
+pytest>=8.2.0
+pytest-cov>=5.0.0

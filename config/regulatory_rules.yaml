@@ -1,0 +1,90 @@
+# ==============================================================================
+# Central Bank of Ireland (CBI) & EU DORA Regulatory Rules Configuration
+# Framework: DORA (Regulation EU 2022/2554) & CBI Operational Resilience Guidance
+# ==============================================================================
+
+version: "2026.1"
+jurisdiction: "Ireland / European Union"
+supervisory_authority: "Central Bank of Ireland (Banc Ceannais na hÉireann)"
+
+rules:
+  # Mandatory Policy Identifier
+  - id: "RULE_POLICY_NUMBER_PRESENT"
+    name: "Mandatory Policy Identification"
+    framework: "CBI Consumer Protection Code"
+    statutory_reference: "Section 4.1 & 4.2"
+    severity: "CRITICAL"
+    action_on_failure: "QUARANTINE"
+    description: "Every claim dossier must bear an active, verified insurance policy number."
+
+  # Positive Liquidation Amount
+  - id: "RULE_POSITIVE_AMOUNTS"
+    name: "Financial Valuation Integrity"
+    framework: "CBI Claims Protocol & Statutory Solvency"
+    statutory_reference: "Section 5.1 & 5.2"
+    severity: "CRITICAL"
+    action_on_failure: "QUARANTINE"
+    description: "Net liquidation and gross loss values must be strictly greater than 0.00 EUR."
+
+  # Notification SLA
+  - id: "RULE_TIMELY_NOTIFICATION"
+    name: "Statutory SLA Notification Window"
+    framework: "DORA Article 19 & CBI Claims Guidelines"
+    statutory_reference: "Section 3.2"
+    severity: "CRITICAL"
+    action_on_failure: "QUARANTINE"
+    max_latency_days: 90
+    description: "Claims lodged >90 days post-incident constitute statutory SLA breaches."
+
+  # Permitted ISO Currency
+  - id: "RULE_ALLOWED_CURRENCY"
+    name: "Authorized Currency Whitelist"
+    framework: "ISO 4217 Currency Standards"
+    statutory_reference: "Section 1.2"
+    severity: "HIGH"
+    action_on_failure: "QUARANTINE"
+    allowed_currencies: ["EUR", "USD", "GBP", "CHF", "JPY"]
+
+  # Irish PPSN Format
+  - id: "RULE_VALID_PPSN_FORMAT"
+    name: "National Tax Identifier Validation"
+    framework: "Irish Social Welfare Consolidation Act & Data Protection Act 2018"
+    statutory_reference: "Section 6.1"
+    severity: "HIGH"
+    action_on_failure: "FLAG_WARNING"
+    pattern: "^\\d{7}[A-Za-z]{1,2}$"
+
+  # Ledger Reconciliation
+  - id: "RULE_LEDGER_RECONCILED"
+    name: "Itemized Ledger Mathematical Reconciliation"
+    framework: "Statutory Claims Liquidation Accounting Standards"
+    statutory_reference: "Section 5.3"
+    severity: "HIGH"
+    action_on_failure: "QUARANTINE"
+    rounding_tolerance_eur: 0.05
+
+  # Metadata Completeness
+  - id: "RULE_METADATA_COMPLETENESS"
+    name: "Operational Metadata Completeness"
+    framework: "CBI Minimum Operational Standards"
+    statutory_reference: "Section 2.2"
+    severity: "MEDIUM"
+    action_on_failure: "QUARANTINE"
+    mandatory_fields:
+      - "claim_id"
+      - "filing_date"
+      - "incident_date"
+      - "incident_type"
+      - "loss_county"
+
+dora_tiers:
+  tier_1:
+    name: "Major ICT Incident (DORA Article 18)"
+    threshold_eur: 100000.0
+    supervisory_notification_hours: 4
+  tier_2:
+    name: "Significant Operational Disruption"
+    supervisory_notification_hours: 24
+  tier_3:
+    name: "Standard Operational Claim (Non-ICT)"
+    statutory_sla_days: 90

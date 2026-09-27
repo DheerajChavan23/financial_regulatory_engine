@@ -1,0 +1,129 @@
+================================================================================
+CENTRAL BANK OF IRELAND (CBI) & EU DIGITAL OPERATIONAL RESILIENCE ACT (DORA)
+REGULATORY OPERATIONAL RESILIENCE AND CLAIMS INGESTION GUIDELINES
+Document Reference: CBI-DORA-REG-2026-V1
+Effective Date: 17 January 2025 (Statutory DORA Enforcement)
+Jurisdiction: Ireland / European Union
+Supervisory Authority: Central Bank of Ireland (Banc Ceannais na hÉireann)
+================================================================================
+
+SECTION 1: PURPOSE AND SCOPE
+--------------------------------------------------------------------------------
+1.1 These Guidelines establish the statutory compliance framework for regulated financial
+entities, insurance undertakings (Designated Activity Companies), and ICT third-party service
+providers operating within the State under Regulation (EU) 2022/2554 (DORA) and the Central
+Bank of Ireland Cross-Industry Guidance on Operational Resilience.
+
+1.2 All digital claims ingestion engines, automated document processors, and operational
+audit pipelines must rigorously apply the mandatory standards herein regarding incident
+classification, statutory notification deadlines, policy identification, financial integrity,
+and data governance.
+
+
+SECTION 2: DORA INCIDENT CLASSIFICATION TIERS (ARTICLE 18)
+--------------------------------------------------------------------------------
+2.1 Financial entities must assess and classify operational and technological incidents
+into one of three defined regulatory tiers:
+    (a) Major ICT-Related Incident (DORA Article 18): An incident having a potential or
+        actual high adverse impact on the network and information systems supporting critical
+        or important functions of the financial entity. Quantitative criteria include:
+        - Financial impact exceeding €100,000 (direct losses or remediation);
+        - Disruption lasting greater than 2 hours to client-facing services;
+        - Data integrity compromise or unauthorized cyber intrusion.
+    (b) Significant Operational Disruption: Incidents causing material service degradation,
+        fleet logistical breakdown, or property damage without compromising core banking/ICT
+        backbones.
+    (c) Standard Operational Claim (Non-ICT): Routine property, casualty, or commercial
+        indemnity claims arising from localized non-technological events.
+
+2.2 The regulatory classification tier assigned at inbound ingestion must be preserved
+across all data lakehouse layers (Bronze, Silver, Gold) for supervisory reporting.
+
+
+SECTION 3: STATUTORY NOTIFICATION TIMELINES AND SLA LIMITS (ARTICLE 19)
+--------------------------------------------------------------------------------
+3.1 Major ICT Incidents:
+    - Initial Notification: Must be submitted to the Central Bank of Ireland within 4 hours
+      from incident classification, and no later than 24 hours from becoming aware of the incident.
+    - Intermediate Report: Required within 72 hours detailing mitigation measures.
+    - Final Report: Mandatory within 1 month following complete incident remediation.
+
+3.2 Operational Claims Submission Deadline SLA:
+    - Under CBI Insurance Claims Protocols, formal insurance and loss dossiers must be
+      lodged with the insurer within a maximum of 90 calendar days from the date of the incident.
+    - Claims submitted with a notification latency exceeding 90 days represent statutory SLA
+      breaches and potential statute of limitations violations.
+    - Ingestion engines must automatically flag and quarantine any claim record where:
+          (Filing_Date - Incident_Date) > 90 days.
+    - Quarantined records may not be promoted to Gold reporting until certified by an authorized
+      claims examiner or legal compliance officer.
+
+
+SECTION 4: MANDATORY POLICY IDENTIFICATION AND CONTRACTUAL VALIDITY
+--------------------------------------------------------------------------------
+4.1 Contractual Binding Requirement:
+    - Every claim dossier submitted for automated ingestion and financial liquidation must
+      bear a valid, authenticated Policy Number (e.g., POL-IE-XXXXXX).
+    - Under the Central Bank of Ireland Consumer Protection Code, financial liquidation
+      cannot be initiated against unverified or missing contracts.
+
+4.2 Missing Policy Protocol:
+    - Submissions where the Policy Number is omitted, null, or populated with placeholder
+      tokens (e.g., 'N/A', 'None', '[MISSING]') must fail schema validation immediately.
+    - The ingestion engine must divert such dossiers to Quarantine with the audit failure tag:
+      'RULE_POLICY_NUMBER_PRESENT'.
+
+
+SECTION 5: FINANCIAL INTEGRITY AND VALUATION RULES
+--------------------------------------------------------------------------------
+5.1 Positive Financial Valuation Standard:
+    - Claims submitted for indemnity liquidation must represent genuine, verifiable, positive
+      financial expenditures incurred during incident remediation or property restoration.
+    - Aggregate Gross Loss, Total Deductible, and Net Claim Liquidation amounts must be strictly
+      greater than zero (Total_Net_Claimed > 0.00 EUR).
+
+5.2 Negative Liquidation Prohibition:
+    - Any claim displaying a negative net liquidation request (Net Claim < €0.00) constitutes
+      a critical financial irregularity, anomalous chargeback error, or potential fraud indicator.
+    - Ingestion pipelines must reject and quarantine all negative amount records under:
+      'RULE_POSITIVE_AMOUNTS'.
+
+5.3 Ledger Reconciliation:
+    - The cumulative sum of individual itemized loss line items (net of deductible) must
+      reconcile with the aggregate requested net claim within a statutory rounding tolerance
+      of ±€0.05. Discrepancies exceeding this threshold require automated quarantine.
+
+
+SECTION 6: DATA GOVERNANCE, GDPR, AND IRISH PPSN PROTECTION
+--------------------------------------------------------------------------------
+6.1 Protection of Restricted Identifiers:
+    - Under the Irish Data Protection Act 2018 and GDPR Article 4(5), Irish Personal Public
+      Service Numbers (PPSNs) represent restricted national identification numbers.
+    - Plaintext PPSNs must NEVER be stored, persisted, or exported to downstream analytical
+      or reporting lakehouse tiers (Silver and Gold).
+
+6.2 Cryptographic Pseudonymization Mandate:
+    - PPSNs must be transformed at the Bronze-to-Silver boundary using a cryptographically
+      salted, keyed HMAC-SHA256 one-way hashing function.
+    - The resulting pseudonym (prefixed with 'PPSN_') provides irreversible unlinkability to
+      external parties while preserving deterministic joins for internal statutory audit.
+
+6.3 Contact and Geographic Masking:
+    - Personal names, contact telephone numbers, and email addresses must be masked.
+    - Street-level addresses must be generalized to County and Eircode Routing Key (first 3
+      characters) to prevent individual re-identification while preserving regional actuarial
+      risk modeling capabilities.
+
+
+SECTION 7: IMMUTABLE AUDITABILITY AND PROVENANCE
+--------------------------------------------------------------------------------
+7.1 Bronze Ingestion Immutability:
+    - Every raw inbound file must be preserved in its pristine, untransformed state with a
+      cryptographic SHA-256 digest and UUID ingestion identifier.
+    - Lakehouse promotion timestamps must be recorded in UTC ISO 8601 format.
+
+7.2 Supervisory Inspection Access:
+    - Regulated entities must ensure that automated compliance audit engines can cross-reference
+      any ingested claim against these regulatory guidelines using Retrieval-Augmented Generation
+      (RAG) and semantic vector search, generating auditable compliance citations on demand.
+================================================================================

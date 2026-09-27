@@ -1,0 +1,74 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Secrets & Environment Variables (CRITICAL)
+.env
+.env.local
+.env.*.local
+*.env
+*.pem
+*.key
+
+# Local Databases & Vector Store Persistence
+data/chroma_db/
+*.sqlite3
+*.duckdb
+
+# Generated Lakehouse Payloads (Keep directory structure via .gitkeep)
+data/01_raw_inbound/*.pdf
+data/01_raw_inbound/*.json
+!data/01_raw_inbound/.gitkeep
+data/02_bronze_lakehouse/*.json
+!data/02_bronze_lakehouse/.gitkeep
+data/03_silver_lakehouse/*.parquet
+data/03_silver_lakehouse/*.json
+data/03_silver_lakehouse/*.jsonl
+!data/03_silver_lakehouse/.gitkeep
+data/04_gold_lakehouse/*.parquet
+data/04_gold_lakehouse/*.json
+data/04_gold_lakehouse/star_schema/*.parquet
+data/04_gold_lakehouse/star_schema/*.json
+!data/04_gold_lakehouse/star_schema/.gitkeep
+data/04_gold_lakehouse/bi_export/*.csv
+data/04_gold_lakehouse/bi_export/*.json
+!data/04_gold_lakehouse/bi_export/.gitkeep
+!data/04_gold_lakehouse/bi_export/dax_measures.dax
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE & OS Artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
